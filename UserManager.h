@@ -43,11 +43,11 @@ user_stack.pop_back();
         //cout<<user_stack[usernum-1].priviledge<<"^^^^^^^ in logput"<<endl;//random
     }
     void adduser(string id,string pass,string name,int privilege){
-       // cout<<"in adduser"<<endl;
+        //cout<<"in adduser"<<endl;
      vector<int> temp (the_blockchai_of_usermanager.findelement(id));
         if (!temp.empty()){cout<<"Invalid"<<endl;
             return;}
-        if (user_stack[usernum-1].priviledge<privilege) {
+        if (user_stack[usernum-1].priviledge<=privilege) {
             //cout<<"defeat in the check"<<endl;
             //cout<<user_stack[usernum-1].priviledge<<endl;
             cout << "Invalid" << endl;
@@ -158,13 +158,17 @@ user_stack.pop_back();
         if (user_stack[usernum-1].priviledge!=7) {cout<<"Invalid"<<endl;
             return;}
         if (!((!id.empty())&&check_the_format_of_string(id))){
+            //cout<<id.empty()<<" "<<check_the_format_of_string(id)<<endl;
+          //  cout<<"*********in delete id"<<endl;
             cout<<"Invalid"<<endl;
             return;
         }
 
 f1.open(USER_SEARCH,ios::binary|ios::in|ios::out);
         vector<int> tempresult(the_blockchai_of_usermanager.findelement(id));
-        if (tempresult.empty()){f1.close();}
+        if (tempresult.empty()){f1.close();
+        cout<<"Invalid"<<endl;
+            return;}
         else{
             f2.open(USER_DATA,ios_base::binary|ios::in | ios::out);
             if (!f2){
@@ -189,11 +193,16 @@ f1.open(USER_SEARCH,ios::binary|ios::in|ios::out);
         if (oldpassword=="@"){
            // cout<<"root in replace password"<<endl;
             if (!(check_the_format_of_string(newpassword))){
+                cout<<"Invalid"<<endl;
               //  cout<<"  out here in check format"<<endl;
                 return;}
-            if (user_stack[usernum-1].priviledge!=7){return;}
+            if (user_stack[usernum-1].priviledge!=7){
+                cout<<"Invalid"<<endl;
+                return;}
             vector<int> temp( the_blockchai_of_usermanager.findelement(id));
-            if (temp.empty()){return;}
+            if (temp.empty()){
+                cout<<"Invalid"<<endl;
+                return;}
             //f1.open(USER_DATA,ios::out|ios::in|ios::binary);
             f1.open(USER_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
@@ -213,9 +222,15 @@ f1.open(USER_SEARCH,ios::binary|ios::in|ios::out);
             f1.close();
         } else{
           //  cout<<"not root replace pass"<<endl;
-            if (!(check_the_format_of_string(newpassword))){return;}
+            if (!(check_the_format_of_string(newpassword))){
+                //cout<<"in pass change1"<<endl;
+                cout<<"Invalid"<<endl;
+                return;}
             vector<int> temp( the_blockchai_of_usermanager.findelement(id));
-            if (temp.empty()){return;}
+            if (temp.empty()){
+                cout<<"Invalid"<<endl;
+                //cout<<"in pass change2"<<endl;
+                return;}
             f1.open(USER_DATA,ios::out|ios::in|ios::binary);
             f1.seekg(temp[0]);
             int num=temp[0];
@@ -246,8 +261,8 @@ f1.close();
     bool check_the_format_of_string(string index){
         if (index.length()>30) { return false; }
         for (int i = 0; i <index.length() ; ++i) {
-            if (!(index[i]=='-'||(index[i]>='1'&&index[i]<='9')||(index[i]>='a'&&index[i]<='z')||(index[i]>='A'&&index[i]<='Z'))){
-               // cout<<index[i]<<"      kkkkk in string check"<<endl;
+            if (!(index[i]=='_'||(index[i]>='0'&&index[i]<='9')||(index[i]>='a'&&index[i]<='z')||(index[i]>='A'&&index[i]<='Z'))){
+                //cout<<index[i]<<"      kkkkk in string check"<<endl;
                 return false;
             }
         }

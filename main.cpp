@@ -11,8 +11,11 @@ int main() {
 fstream fo;
 
     while (getline(cin,command)){
+        command.erase(0,command.find_first_not_of(" "));
+        command.erase(command.find_last_not_of(" ") + 1);
         if (command=="quit"||command=="exit") break;
-        //cout<<command<<endl;
+       // cout<<"______________"<<endl;
+       // cout<<command<<endl;
 
         commandbookstore.run(command);
 

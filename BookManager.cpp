@@ -41,9 +41,10 @@ string temp1;int i;
        // cout<<user_id<<" "<<pass<<endl;
         //cout<<i<<  "  len"<<len<<endl;
         //cout<<i<<  "  len"<<len<<endl;
-        if (i<len) { error();
+        if (i!=len) { error();
             return;}
         else{
+            if (user_id.empty()||pass.empty()){error();return;}
             if (pass.empty()){
                 cmd.su(user_id,"@q@");
             }
@@ -56,11 +57,11 @@ string temp1;int i;
         for (i++; i <len&&temp[i]!=' ' ; ++i) {pass+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {privilege+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {username+=temp[i];}
-        if (i<len) { error();
+        if (i!=len) { error();
             return;}
         else{
-            if (privilege.empty()||username.empty()) {
-
+            if (privilege.empty()||username.empty()||pass.empty()||username.empty()) {
+              //  cout<<"error in useradd"<<endl;
                 error();
                 return;}
             cmd.adduser(user_id,pass,username,atoi(privilege.c_str()));
@@ -69,12 +70,12 @@ string temp1;int i;
     else if (temp1=="delete"){
         string userid;
         for (i++; i <len&&temp[i]!=' ' ; ++i) {userid+=temp[i];}
-        if (i<len) { error(); return;}
+        if (i!=len) { error(); return;}
         else{ cmd.deleteid(userid); }
     }
     else if (temp1=="select"){
 string ISBN;for (i++; i <len&&temp[i]!=' ' ; ++i) {ISBN+=temp[i];}
-        if (i<len) error();
+        if (i!=len) error();
         else{select(ISBN);}
     } else if (temp1=="passwd"){
         string userid,oldpass,newpass;
@@ -242,7 +243,7 @@ string modify1,modify2,modify3,modify4,modify5,modify6;
             else if (keycharacter=="price"){ modify("price",index,bookisbn);}
         }
     } else if (temp1=="logout"){
-        if (i<len) error();
+        if (i!=len) error();
         else{
 cmd.logout();
         }
@@ -251,8 +252,11 @@ cmd.logout();
         for (i++; i <len&&temp[i]!=' ' ; ++i) {user_id+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {pass+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {username+=temp[i];}
-        if (i<len) error();
+        if (i!=len) error();
         else{
+            if (user_id.empty()||pass.empty()||username.empty()){
+                error();return;
+            }
           // cout<<" in run register"<<endl;
 cmd.registeruser(user_id,pass,username);
         }
@@ -263,7 +267,7 @@ cmd.registeruser(user_id,pass,username);
         string totalnum,totalmoney;
         for (i++; i <len&&temp[i]!=' ' ; ++i) {totalnum+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {totalmoney+=temp[i];}
-        if (i<len) error();
+        if (i!=len) error();
         else{
             if (!isDegital(totalnum)){
                 cout<<"Invalid"<<endl;
@@ -275,8 +279,9 @@ import(atoi(totalnum.c_str()),atof(totalmoney.c_str()));
         string ISBN_,quantity_;
         for (i++; i <len&&temp[i]!=' ' ; ++i) {ISBN_+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {quantity_+=temp[i];}
-        if (i<len) error();
+        if (i!=len) error();
         else{
+            if (ISBN_.empty()||quantity_.empty()){error();return;}
             buy(ISBN_,quantity_);
         }
 
