@@ -752,14 +752,15 @@ f6.close();
         }
         if (type=="keyword"){
             //KEYWORD_BOOKSTORE.debug();
-            //cout<<" aboye is in the bookstore.h showwithrestrict keyword"<<endl;
+           // cout<<" aboye is in the bookstore.h showwithrestrict keyword"<<endl;
             int len=keyword.length();
             string beyong_master;
             for (int i = 1; i <len-1 ; ++i) {
                 beyong_master+=keyword[i];
             }
-            vector<int > tempans(KEYWORD_BOOKSTORE.findelement(beyong_master));
+            vector<int > tempans(KEYWORD_BOOKSTORE.findelement(beyong_master.c_str()));
             if (tempans.empty()){cout<<endl;
+            //cout<<"RUTURN HERE"<<endl;
                 return;}
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){

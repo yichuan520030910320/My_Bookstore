@@ -296,7 +296,7 @@ vector<int> findelement(const string key_name) {
 int controloffset=0;
     while (strcmp(temp,key_name.c_str())<0)
     {
-      // if (controloffset!=0) cout<<"++++++++"<<temp<<"    "<<key_name<<endl;
+      //if (controloffset!=0) cout<<"++++++++"<<temp<<"    "<<key_name<<endl;
         f1.seekg(controloffset);
     int temp1;
     f1.read(reinterpret_cast<char*>(&temp1),4);
@@ -306,8 +306,13 @@ int controloffset=0;
         controloffset=headoffset;
         f3.seekg(headoffset+16);
         f3.read(reinterpret_cast<char*>(&temp),100);
-
+//cout<<temp<<"     "<<key_name<<"*******************"<<endl;
        // cout<<"  f1.fail:"<<f1.fail()<<"   f2.fail:"<<f3.fail()<<endl;
+    }
+    int num11;
+    if (headoffset!=-1){
+        f3.seekg(controloffset+4);
+        f3.read(reinterpret_cast<char*>(&controloffset),4);
     }
     f3.seekg(controloffset);
    // cout<<controloffset<<"   findelement controloffset"<<endl;
@@ -316,10 +321,10 @@ int controloffset=0;
     f3.read(reinterpret_cast<char*>(&tempblock),sizeof (block));
     element tempelement;
     strcpy(tempelement.key,key_name.c_str());
-   // cout<<tempelement.key<<" in find ele  temp.key"<<endl;
-    //cout<<key_name<<"findelement"<<endl;
-    //cout<<tempblock.array[0].key<<" 8888888"<<tempblock.array[1].key<<"debug in findelement"<<endl;
-  //  cout<<tempblock.numofelment<<"debug in tempblock.num in findelement"<<endl;
+   //cout<<tempelement.key<<" in find ele  temp.key"<<endl;
+   //cout<<key_name<<"findelement"<<endl;
+  // cout<<tempblock.array[0].key<<" 8888888"<<tempblock.array[1].key<<"debug in findelement"<<endl;
+   //cout<<tempblock.numofelment<<"debug in tempblock.num in findelement"<<endl;
     int location=lower_bound(tempblock.array,tempblock.array+tempblock.numofelment,tempelement)-tempblock.array;//todo
     int nowlocation=location;//todo what's the fuuuck
     //cout<<location<<"location  debug in findnode"<<endl;
