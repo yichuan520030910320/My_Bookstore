@@ -38,18 +38,23 @@ string temp1;int i;
         for (i++; (i <len&&temp[i]!=' ') ; ++i) {
             pass+=temp[i];
         }
+        for (; i < len && temp[i] == ' '; ++i);
        // cout<<user_id<<" "<<pass<<endl;
         //cout<<i<<  "  len"<<len<<endl;
         //cout<<i<<  "  len"<<len<<endl;
-        if (i!=len) { error();
+        if (i<len) { error();
+        //cout<<"****"<<endl;
+       // cout<<"su 0"<<endl;
             return;}
         else{
-            if (user_id.empty()||pass.empty()){error();return;}
+                if (user_id.empty()){error();
+               // cout<<"su 1"<<endl;
+                return;}
             if (pass.empty()){
                 cmd.su(user_id,"@q@");
             }
            // cout<<user_id<<" "<<pass<<endl;
-         else   { cmd.su(user_id, pass); }
+            else   { cmd.su(user_id, pass); }
         }
     } else if (temp1=="useradd"){
         string user_id,pass,privilege,username;
