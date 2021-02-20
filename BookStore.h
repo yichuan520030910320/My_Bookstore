@@ -530,11 +530,12 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
             return;}
         tempbook.quantity-=tempquantity;
         double bookprice=tempbook.price;
-        if (bookprice==-1){cout<<"0.00"<<endl;
-            return;}
+
        // cout<<bookprice<<"   bookprice"<<endl;
         f1.seekg(tempoffset);
         f1.write(reinterpret_cast<char*>(&tempbook),sizeof (Book));
+        if (bookprice==-1){cout<<"0.00"<<endl;
+            return;}
        // f1.read(reinterpret_cast<char*>(&booknum_for_storage),sizeof (int));
        // booknum_for_storage+=tempquantity;
        // f1.seekg(tempoffset+218);
@@ -655,6 +656,7 @@ f1.close();
             f6.read(reinterpret_cast<char*>(&tempbook),sizeof(Book));
            // cout<<tempbook.price<<"   book.price "<<endl;
              double output=0;
+            // cout<<tempbook.price<<" in show ISBN"<<endl;
             if (tempbook.price==-1){ printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, output, tempbook.quantity);
             } else printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
 
@@ -792,7 +794,11 @@ f6.close();
                 Book tempbook;
                 f6.read(reinterpret_cast<char*>(&tempbook),sizeof(Book));
                // cout<<tempbook.price<<"   book.price "<<endl;
-                printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
+                double output=0;
+                if (tempbook.price==-1){  printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, output, tempbook.quantity);
+                } else printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
+
+                // printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
                 f6.close();
                 f1.seekg(it->offset);
                 char ISBN_[30];

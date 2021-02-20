@@ -16,7 +16,7 @@ fstream fo;
         if (command=="quit"||command=="exit") break;
        // cout<<"______________"<<endl;
         //cout<<command<<endl;
-//cout<<"# "<<command<<endl;
+cout<<"# "<<command<<endl;
         commandbookstore.run(command);
 //commandbookstore.KEYWORD_BOOKSTORE.debug();
 //        cout<<command<<":"<<endl;
