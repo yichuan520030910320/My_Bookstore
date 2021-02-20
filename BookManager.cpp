@@ -22,6 +22,7 @@ void the_fuction_in_modify(string temp){
 }
 void bookstore::run(string temp){
 //cout<<"&&&"<<endl;
+    if (temp.empty()){return;}
 int len=temp.length();
 string temp1;int i;
     for (i = 0; i <len&&temp[i]!=' ' ; ++i) {
