@@ -16,9 +16,9 @@ fstream fo;
         if (command=="quit"||command=="exit") break;
        // cout<<"______________"<<endl;
         //cout<<command<<endl;
-
+cout<<"# "<<command<<endl;
         commandbookstore.run(command);
-
+//commandbookstore.KEYWORD_BOOKSTORE.debug();
 //        cout<<command<<":"<<endl;
 //        fo.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
 //        if (!fo){

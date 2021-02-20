@@ -255,7 +255,6 @@ void deleteelment(const element&index){
         int nxtnum;
         f5.read(reinterpret_cast<char*>(&nxtnum),4);
         if (nxtnum+tempblock.numofelment<MERGENUM) mergeblock(tempheadoffsey,nxtblock(tempheadoffsey));
-
     }
     f1.close(),f2.close(),f3.close(),f4.close();
     f5.close();
@@ -284,14 +283,14 @@ vector<int> findelement(const string key_name) {
     if (strcmp(temp,key_name.c_str())>0) {
         f1.close(),f2.close(),f3.close(),f4.close();
         return return_ans;}
-    if (strcmp(temp,key_name.c_str())==0) {
-        f1.seekg(-104,ios::cur);
-        int ans;
-        f1.read(reinterpret_cast<char*>(&ans),4);
-        return_ans.push_back(ans);
-        f1.close(),f2.close(),f3.close(),f4.close();
-        return return_ans;
-    }
+//    if (strcmp(temp,key_name.c_str())==0) {
+//        f1.seekg(-104,ios::cur);
+//        int ans;
+//        f1.read(reinterpret_cast<char*>(&ans),4);
+//        return_ans.push_back(ans);
+//        f1.close(),f2.close(),f3.close(),f4.close();
+//        return return_ans;
+//    }
     int headoffset=0;
 int controloffset=0;
     while (strcmp(temp,key_name.c_str())<0)

@@ -367,6 +367,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
 
         }
         else if (keycharacter=="keyword"){//注意这里不同于上面，关键词要求一个一个添加到块状链表中
+
             vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(isbnstring));
             if (tempsearch.empty()){
                 cout<<"Invalid"<<endl;
@@ -426,9 +427,8 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
             for (int i = 0; i < tempvec.size(); ++i) {
                 KEYWORD_BOOKSTORE.addelement(element(tempoffset,tempvec[i]));
             }
-            //ISBN_BOOKSTORE_blocklist.debug();
-
-            //ISBN_BOOKSTORE_blocklist.debug();
+          // KEYWORD_BOOKSTORE.debug();
+          //  cout<<"  in modify keyword"<<endl;
             f1.close();
             f6.close();
 
@@ -530,6 +530,8 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
             return;}
         tempbook.quantity-=tempquantity;
         double bookprice=tempbook.price;
+        if (bookprice==-1){cout<<"0.00"<<endl;
+            return;}
        // cout<<bookprice<<"   bookprice"<<endl;
         f1.seekg(tempoffset);
         f1.write(reinterpret_cast<char*>(&tempbook),sizeof (Book));
@@ -653,7 +655,7 @@ f1.close();
             f6.read(reinterpret_cast<char*>(&tempbook),sizeof(Book));
            // cout<<tempbook.price<<"   book.price "<<endl;
              double output=0;
-            if (tempbook.price==-1){  printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, output, tempbook.quantity);
+            if (tempbook.price==-1){ printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, output, tempbook.quantity);
             } else printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
 
             //printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
@@ -725,16 +727,7 @@ f1.close();
             } else printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
 
 f6.close();
-
-
-
-
-
                 f1.seekg(it->offset);
-
-
-
-
                 char ISBN_[30];
                 char name_[60];
                 char author_[60];
@@ -751,9 +744,9 @@ f6.close();
             }
         }
         if (type=="keyword"){
-            //
-            //KEYWORD_BOOKSTORE.debug();
-           // cout<<" aboye is in the bookstore.h showwithrestrict keyword"<<endl;
+
+         //   KEYWORD_BOOKSTORE.debug();
+          // cout<<" aboye is in the bookstore.h showwithrestrict keyword"<<endl;
             int len=keyword.length();
             string beyong_master;
             for (int i = 1; i <len-1 ; ++i) {
@@ -764,9 +757,7 @@ f6.close();
             //cout<<"RUTURN HERE"<<endl;
                 return;}
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
-            if (!f1){
-                f1.open(BOOK_DATA,ios::out|ios::binary);
-            }
+            if (!f1){f1.open(BOOK_DATA,ios::out|ios::binary);}
             set<pair_ISBN_offset> s;
             for (vector<int>::const_iterator iter = tempans.cbegin();iter !=tempans.cend(); iter++) {
                 //cout << (*iter) << endl;
@@ -788,10 +779,10 @@ f6.close();
                 s.insert(pair_ISBN_offset(name1,*iter));
                 //cout<<ISBN_<<" "<<name_<<" "<<author_<<" "<<keywords_<<" "<<setiosflags(ios::fixed) << setprecision(2)<<price_<<" "<<quantity_<<endl;
             }
+            //cout<<tempans.size()<<"   "<<s.size()<<"&&&&&&&&&&&&&&&&&"<<endl;
             set<pair_ISBN_offset>::iterator it;
             for(it=s.begin ();it!=s.end ();it++)
-            {
-                f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
+            {f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
                 if (!f6){
                     f6.open(BOOK_DATA,ios::out|ios::binary);
                 }
@@ -803,7 +794,6 @@ f6.close();
                // cout<<tempbook.price<<"   book.price "<<endl;
                 printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", tempbook.ISBN, tempbook.name, tempbook.author, tempbook.keywords, tempbook.price, tempbook.quantity);
                 f6.close();
-
                 f1.seekg(it->offset);
                 char ISBN_[30];
                 char name_[60];
