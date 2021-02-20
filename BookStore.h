@@ -622,6 +622,8 @@ f1.close();
 //        f1.close();
     }
     void  show_part_withrestrict(string type,string keyword){
+        f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
+        //cout<<f1.fail()<<"((("<<endl;
        // cout<<cmd.user_stack[cmd.usernum-1].priviledge<<"show with restrict"<<endl;
         if (cmd.user_stack[cmd.usernum-1].priviledge<1||keyword.empty()){
             cout<<"Invalid"<<endl;
@@ -633,13 +635,30 @@ f1.close();
             pair_ISBN_offset(string s,int a):ISBN(s),offset(a){}
             pair_ISBN_offset() {}
             bool operator <(const  pair_ISBN_offset &s) const {
-                return ISBN<s.ISBN;
+                return (strcmp(ISBN.c_str(),s.ISBN.c_str())<0);
+            }
+            pair_ISBN_offset(const pair_ISBN_offset & pt)//复制构造函数的定义及实现
+            {
+                offset=pt.offset;
+               ISBN=pt.ISBN;
+            }
+            pair_ISBN_offset& operator =(const pair_ISBN_offset& str)//赋值运算符
+            {
+                if (this==&str) return *this;
+                offset=str.offset;
+                ISBN=str.ISBN;
+                return *this;
+            }
+            bool operator ==(const  pair_ISBN_offset &s) const {
+                return( offset==s.offset&&strcmp(ISBN.c_str(),s.ISBN.c_str())==0);
             }
         };
         if (type=="ISBN") {
             vector<int > tempans(ISBN_BOOKSTORE_blocklist.findelement(keyword));
             if (tempans.empty()){cout<<endl;
                 return;}
+            f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
+            f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
             int tempooffset=tempans[0];
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
@@ -687,6 +706,8 @@ f1.close();
             vector<int > tempans(AUTHOR_BOOKSTORE.findelement(beyong_master));
             if (tempans.empty()){cout<<endl;
                 return;}
+            f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
+            f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(BOOK_DATA,ios::out|ios::binary);
@@ -747,8 +768,9 @@ f6.close();
         }
         if (type=="keyword"){
 
-         //   KEYWORD_BOOKSTORE.debug();
-          // cout<<" aboye is in the bookstore.h showwithrestrict keyword"<<endl;
+           //KEYWORD_BOOKSTORE.debug();
+           //cout<<" aboye is in the bookstore.h showwithrestrict keyword"<<endl;
+            f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
             int len=keyword.length();
             string beyong_master;
             for (int i = 1; i <len-1 ; ++i) {
@@ -758,30 +780,33 @@ f6.close();
             if (tempans.empty()){cout<<endl;
             //cout<<"RUTURN HERE"<<endl;
                 return;}
-            f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
+            f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
+            f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
+           // cout<<f1.fail()<< f2.fail()<<f3.fail()<<f4.fail()<<f5.fail()<<f6.fail()<<"((("<<endl;
+            f1.open(BOOK_DATA,ios::binary|ios::in | ios::out);
             if (!f1){f1.open(BOOK_DATA,ios::out|ios::binary);}
+           // cout<<f1.fail()<<"((("<<endl;
             set<pair_ISBN_offset> s;
+            s.clear();
+            int cnt=1;
             for (vector<int>::const_iterator iter = tempans.cbegin();iter !=tempans.cend(); iter++) {
                 //cout << (*iter) << endl;
+               // cout<<f1.fail()<<"((("<<endl;
                 f1.seekg(*iter);
+                Book tempbook;
+                f1.read(reinterpret_cast<char*>(&tempbook),sizeof (Book));
+
                 char ISBN_[30];
-                char name_[60];
-                char author_[60];
-                char keywords_[60];
-                double price_;
-                int quantity_;
-                f1.read(reinterpret_cast<char*>(&ISBN_),30);
-                f1.read(reinterpret_cast<char*>(&name_),60);
-                f1.read(reinterpret_cast<char*>(&author_),60);
-                f1.read(reinterpret_cast<char*>(&keywords_),60);
-                f1.read(reinterpret_cast<char*>(&price_),8);//两位小数输出
-                f1.read(reinterpret_cast<char*>(&quantity_),4);
+                strcpy(ISBN_,tempbook.ISBN);
+
                 string name1;
                 name1 = ISBN_;
                 s.insert(pair_ISBN_offset(name1,*iter));
+              //  cout<<cnt++<<"***"<<*iter<<" "<<name1<<endl;
+                //cout<<s.size()<<"   size of s"<<endl;
                 //cout<<ISBN_<<" "<<name_<<" "<<author_<<" "<<keywords_<<" "<<setiosflags(ios::fixed) << setprecision(2)<<price_<<" "<<quantity_<<endl;
             }
-            //cout<<tempans.size()<<"   "<<s.size()<<"&&&&&&&&&&&&&&&&&"<<endl;
+          // cout<<tempans.size()<<"   "<<s.size()<<"&&&&&&&&&&&&&&&&&"<<endl;
             set<pair_ISBN_offset>::iterator it;
             for(it=s.begin ();it!=s.end ();it++)
             {f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
@@ -825,6 +850,8 @@ f6.close();
             vector<int > tempans(BOOKNAME_BOOKSTORE_blocklist.findelement(beyong_master));
             if (tempans.empty()){cout<<endl;
                 return;}
+            f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
+            f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(BOOK_DATA,ios::out|ios::binary);
