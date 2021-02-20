@@ -68,6 +68,7 @@ UnrolledLinkedList::UnrolledLinkedList(const string &name): filename(name){
     if (!f5){f5.open(filename,ios::out|ios::binary);}
     f6.open(filename,ios_base::binary|ios::in | ios::out);
     if (!f6){f6.open(filename,ios::out|ios::binary);}
+
    // cout<<f1.fail()<<"  "<<f2.fail()<<"in blocklist constructer"<<endl;
     f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
 }
@@ -109,18 +110,18 @@ void UnrolledLinkedList::splitblock(const int offset)//this offset means the loc
    // cout<<f3.fail()<<" debug in split"<<endl;
     int endlocation=f3.tellg();
 f3.close();
-    for (int i = 0; i <temp-SPLIT_NUM; ++i) {
-        tempblock.array[i]=tempblock.array[i+MAXN_NUM_OF_BLOCK];
+    for (int i = 0; i <temp-SPLIT_NUM_LEFT; ++i) {
+        tempblock.array[i]=tempblock.array[i+SPLIT_NUM_LEFT];
     }
-    for (int i = temp-SPLIT_NUM; i <MAXN_NUM_OF_BLOCK ; ++i) {
+    for (int i = temp-SPLIT_NUM_LEFT; i <tempblock.numofelment ; ++i) {
         tempblock.array[i]=element();
     }
-    tempblock.numofelment-=SPLIT_NUM;//SPLIT_NUM意思是剩下的元素数量
+    tempblock.numofelment-=SPLIT_NUM_LEFT;//SPLIT_NUM意思是剩下的元素数量
     f6.seekg(offset);
     f6.write(reinterpret_cast<char*>(&endlocation),4);
     f6.close();
     f5.seekg(offset+8);
-    int num=SPLIT_NUM;
+    int num=SPLIT_NUM_LEFT;
     f5.write(reinterpret_cast<char*>(&num),4);
     f5.seekg(endlocation);
     f5.write(reinterpret_cast<char*>(&tempblock),sizeof (block));

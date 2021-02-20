@@ -11,7 +11,7 @@
 #include <vector>
 #include <fstream>
 #define MAXN_NUM_OF_BLOCK 300
-#define SPLIT_NUM 300//设置成一样可以避免列快失败
+#define SPLIT_NUM_LEFT 150//设置成一样可以避免列快失败
 #define MERGENUM 50
 
 
@@ -76,6 +76,7 @@ public:
     ~UnrolledLinkedList();
 void  addelement(const element&index){
         string temp=index.key;
+       // cout<<temp<<"(((((((((((((()))))))))))))))))))))))))))))"<<endl;
   //  cout<<f1.fail()<<"&&&&in debug addelement  in the addelement begin"<<f2.fail()<<endl;
     f1.open(filename,ios_base::binary|ios::in | ios::out);
     if (!f1){f1.open(filename,ios::out|ios::binary);}
@@ -119,7 +120,9 @@ void  addelement(const element&index){
 //        cout<<temp1<<" debug in findnode"<<endl;
     } else{
         int headoffset=0,lastoffset_in_the_block;
-        f1.read(reinterpret_cast<char*>(&headname),100);
+        f4.seekg(headoffset+16);
+        f4.read(reinterpret_cast<char*>(&headname),100);
+        //cout<<f1.fail()<<"   "<<f2.fail()<<"  "<<f3.fail()<<"   "<<f4.fail()<<"  "<<f5.fail()<<"   "<<f6.fail()<<endl;
 //        f1.seekg(0);
 //        int num;
 //        f1.read(reinterpret_cast<char *>(&num),4);
@@ -127,24 +130,28 @@ void  addelement(const element&index){
       // cout<<headname<<" "<<temp<<" addelement"<<endl;
         int controloffset=0;
         string str(headname);
-        while (temp>str)//endless loop
+      //  cout<<headname<<"      ***************&&&&&&&&&&&&&&&&&%%#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
+      //  cout<<str<<"    "<<temp<<"**************^^^^^^^^^^^^^^^^^^^^%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%****"<<endl;
+        //cout<<strcmp(temp.c_str(),str.c_str())<<"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&"<<endl;
+        while (strcmp(temp.c_str(),str.c_str())>0)//endless loop
         {
             //cout<<"********"<<endl;
        // cout<<headoffset<<"pre  &&&&"<<endl;
-        f1.seekg(headoffset);
+        f4.seekg(headoffset);
         controloffset=headoffset;
         int tempoff;
-        f1.read(reinterpret_cast<char*>(&tempoff),4);
+        f4.read(reinterpret_cast<char*>(&tempoff),4);
         headoffset=tempoff;
             //headoffset=nxtblock(headoffset);
            // cout<<headoffset<<"&&&&&&"<<endl;
             if (headoffset==-1) break;
-            f1.seekg(headoffset+16);
-            f1.read(reinterpret_cast<char*>(&headname),100);//logic may need to be rewrite
+            f4.seekg(headoffset+16);
+            f4.read(reinterpret_cast<char*>(&headname),100);//logic may need to be rewrite
             str=headname;
+            //cout<<str<<"    "<<temp<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"<<endl;
         }
         //this headoffset means the block of the node and now to search the block
-       //cout<<headoffset<<"debug in addelement"<<endl;
+      // cout<<controloffset<<"debug in addelement_____________________________"<<endl;
         f4.seekg(controloffset);
         block tempblock;
         f4.read(reinterpret_cast<char*>(&tempblock),sizeof (block));
@@ -154,11 +161,11 @@ void  addelement(const element&index){
             tempblock.array[i+1]=tempblock.array[i];
         }
         tempblock.array[location]=index;
- tempblock.numofelment++;
+        tempblock.numofelment++;
  //cout<<tempblock.array[0].key<<" mmm"<<tempblock.array[1].key<<endl;
- f5.seekg(controloffset);
-        f5.write(reinterpret_cast<char*>(&tempblock),sizeof (block));
-        if (tempblock.numofelment>SPLIT_NUM)
+ f4.seekg(controloffset);
+        f4.write(reinterpret_cast<char*>(&tempblock),sizeof (block));
+        if (tempblock.numofelment>MAXN_NUM_OF_BLOCK)
         {f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
             splitblock(controloffset);
             return;
@@ -287,33 +294,39 @@ vector<int> findelement(const string key_name) {
     }
     int headoffset=0;
 int controloffset=0;
-    while (temp<key_name)
-    {f1.seekg(controloffset);
-    int temp;
-    f1.read(reinterpret_cast<char*>(&temp),4);
-    headoffset=temp;
+    while (strcmp(temp,key_name.c_str())<0)
+    {
+      // if (controloffset!=0) cout<<"++++++++"<<temp<<"    "<<key_name<<endl;
+        f1.seekg(controloffset);
+    int temp1;
+    f1.read(reinterpret_cast<char*>(&temp1),4);
+    headoffset=temp1;
         //headoffset=nxtblock(headoffset);
         if (headoffset==-1) break;
         controloffset=headoffset;
         f3.seekg(headoffset+16);
         f3.read(reinterpret_cast<char*>(&temp),100);
+
+       // cout<<"  f1.fail:"<<f1.fail()<<"   f2.fail:"<<f3.fail()<<endl;
     }
-    f4.seekg(controloffset);
+    f3.seekg(controloffset);
+   // cout<<controloffset<<"   findelement controloffset"<<endl;
     block tempblock;
     //cout<<controloffset<<"&&&&& control offset in findelement"<<endl;
-    f4.read(reinterpret_cast<char*>(&tempblock),sizeof (block));
+    f3.read(reinterpret_cast<char*>(&tempblock),sizeof (block));
     element tempelement;
     strcpy(tempelement.key,key_name.c_str());
-    //cout<<tempelement.key<<" in find ele  temp.key"<<endl;
+   // cout<<tempelement.key<<" in find ele  temp.key"<<endl;
     //cout<<key_name<<"findelement"<<endl;
     //cout<<tempblock.array[0].key<<" 8888888"<<tempblock.array[1].key<<"debug in findelement"<<endl;
-    //cout<<tempblock.numofelment<<"debug in tempblock.num in findelement"<<endl;
+  //  cout<<tempblock.numofelment<<"debug in tempblock.num in findelement"<<endl;
     int location=lower_bound(tempblock.array,tempblock.array+tempblock.numofelment,tempelement)-tempblock.array;//todo
     int nowlocation=location;//todo what's the fuuuck
     //cout<<location<<"location  debug in findnode"<<endl;
 
     //above is right
     while (nowlocation!=(tempblock.numofelment)&&key_name==tempblock.array[nowlocation].key){
+       // cout<<tempblock.array[nowlocation].offset<<"  &&&&&&&&&&&& find element"<<endl;
         return_ans.push_back(tempblock.array[nowlocation].offset);
         nowlocation++;
     }

@@ -117,6 +117,7 @@ fstream f1,f2,f3,f4,f5,f6;
             tempele.offset=tempoffset;
             strcpy(tempele.key,ISBN_.c_str());
             //cout<<ISBN_.c_str()<<" in select"<<endl;
+           //cout<<ISBN_<<"((((((((((((((((^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^(("<<endl;
             ISBN_BOOKSTORE_blocklist.addelement(element(tempoffset,ISBN_.c_str()));//todo
            // cout<<"select fuction:"<<endl;
            // ISBN_BOOKSTORE_blocklist.debug();
@@ -199,8 +200,10 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
     void modify(string keycharacter,string index,int offset){
       // cout<<"?????????begin in modify"<<endl;
       //cout<<"index  :"<<index<<"       in modify"<<endl;
+     //cout<<cmd.user_stack[cmd.usernum-1].currentbookISBN<<"******* in modify"<<endl;
+    // cout<<offset<<"**************8 in modify"<<endl;
         if (index.empty()||(cmd.user_stack[cmd.usernum-1].priviledge)<3||cmd.user_stack[cmd.usernum-1].currentbookISBN==-1) {
-           //cout<<"first invalid in modify fuction"<<endl;
+          // cout<<"first invalid in modify fuction"<<endl;
             cout<<"Invalid"<<endl;
             return;}
         f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
@@ -216,6 +219,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
         //cout<<f1.fail()<<"  in the modify begin f1.fail"<<endl;
 
         if (keycharacter=="author"){
+           // cout<<isbnstring<<"  &&&&& IN AUTHOR"<<endl;
             vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(isbnstring));
             if (tempsearch.empty()){
                // cout<<"   find result empty in modify"<<endl;
@@ -267,7 +271,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
            // ISBN_BOOKSTORE_blocklist.debug();
             vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(isbnstring));
             if (tempsearch.empty()){
-               // cout<<"   tempsearch empty!!! in modify_name"<<endl;
+               //cout<<"   tempsearch empty!!! in modify_name"<<endl;
                 cout<<"Invalid"<<endl;
                 f1.close();
                 return;}

@@ -23,13 +23,14 @@ void the_fuction_in_modify(string temp){
 void bookstore::run(string temp){
 //cout<<"&&&"<<endl;
 //
+
     if (temp.empty()){return;}
 int len=temp.length();
 string temp1;int i;
     for (i = 0; i <len&&temp[i]!=' ' ; ++i) {
         temp1+=temp[i];
     }
-
+   // if (temp1=="modify"){ISBN_BOOKSTORE_blocklist.debug();}
     if (temp1=="su"){
       // cout<<" in run su"<<endl;
        //cout<<temp<<"    in su "<<endl;
