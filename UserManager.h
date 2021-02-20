@@ -1,3 +1,6 @@
+#ifndef CODE_USERMANAGER_H
+#define CODE_USERMANAGER_H
+
 #include "blockchain.h"
 #define USER_DATA "user.data"
 #define COMMAND_DATA "command.data"
@@ -59,6 +62,7 @@ user_stack.pop_back();
         strcpy(tempuser.id,id.c_str());
         tempuser.priviledge=privilege;
         int temppos;
+        f1.close();
         f1.open(USER_DATA,ios::in|ios::out|ios::binary);
         f1.seekg(0,ios::end);
         temppos=f1.tellg();
@@ -75,6 +79,7 @@ user_stack.pop_back();
             vector<int> tempresult(the_blockchai_of_usermanager.findelement(id));
             if (tempresult.empty()){cout<<"Invalid"<<endl;
                 return;}
+            f1.close();
             f1.open(USER_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(USER_DATA,ios::out|ios::binary);
@@ -94,6 +99,7 @@ user_stack.pop_back();
             return;
         }
        //cout<<"su debug"<<endl;
+       f1.close();
         if (!f1.is_open()){
             f1.open(USER_DATA, ios::binary | ios::out | ios::in);
             //cout<<the_blockchai_of_usermanager.findelement(id).empty()<<"*"<<endl;
@@ -144,6 +150,7 @@ user_stack.pop_back();
         strcpy(tempuser.id,user_id.c_str());
         tempuser.priviledge=1;
         int temppos;
+        f1.close();
         f1.open(USER_DATA,ios::in|ios::out|ios::binary);
         f1.seekg(0,ios::end);
         temppos=f1.tellg();
@@ -163,13 +170,13 @@ user_stack.pop_back();
             cout<<"Invalid"<<endl;
             return;
         }
-
+f1.close();
 f1.open(USER_SEARCH,ios::binary|ios::in|ios::out);
         vector<int> tempresult(the_blockchai_of_usermanager.findelement(id));
         if (tempresult.empty()){f1.close();
         cout<<"Invalid"<<endl;
             return;}
-        else{
+        else{f2.close();
             f2.open(USER_DATA,ios_base::binary|ios::in | ios::out);
             if (!f2){
                 f2.open(USER_DATA,ios::out|ios::binary);
@@ -203,6 +210,7 @@ f1.open(USER_SEARCH,ios::binary|ios::in|ios::out);
             if (temp.empty()){
                 cout<<"Invalid"<<endl;
                 return;}
+            f1.close();
             //f1.open(USER_DATA,ios::out|ios::in|ios::binary);
             f1.open(USER_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
@@ -231,6 +239,7 @@ f1.open(USER_SEARCH,ios::binary|ios::in|ios::out);
                 cout<<"Invalid"<<endl;
                 //cout<<"in pass change2"<<endl;
                 return;}
+            f1.close();
             f1.open(USER_DATA,ios::out|ios::in|ios::binary);
             f1.seekg(temp[0]);
             int num=temp[0];
@@ -271,3 +280,4 @@ f1.close();
     }
 
 };
+#endif

@@ -8,8 +8,7 @@ int main() {
     init();
     string command;
     int cnt=1;
-fstream fo;
-
+    fstream fo;
     while (getline(cin,command)){
         command.erase(0,command.find_first_not_of(" "));
         command.erase(command.find_last_not_of(" ") + 1);

@@ -254,7 +254,11 @@ void deleteelment(const element&index){
         f5.seekg(nxtblock(tempheadoffsey)+8);
         int nxtnum;
         f5.read(reinterpret_cast<char*>(&nxtnum),4);
-        if (nxtnum+tempblock.numofelment<MERGENUM) mergeblock(tempheadoffsey,nxtblock(tempheadoffsey));
+        if (nxtnum+tempblock.numofelment<MERGENUM) {
+            f1.close(),f2.close(),f3.close(),f4.close();
+            f5.close();
+            mergeblock(tempheadoffsey, nxtblock(tempheadoffsey));
+            return;}
     }
     f1.close(),f2.close(),f3.close(),f4.close();
     f5.close();
@@ -314,7 +318,7 @@ int controloffset=0;
         f3.read(reinterpret_cast<char*>(&controloffset),4);
     }
     f3.seekg(controloffset);
-   // cout<<controloffset<<"   findelement controloffset"<<endl;
+   //cout<<controloffset<<"   findelement controloffset"<<endl;
     block tempblock;
     //cout<<controloffset<<"&&&&& control offset in findelement"<<endl;
     f3.read(reinterpret_cast<char*>(&tempblock),sizeof (block));
@@ -325,7 +329,7 @@ int controloffset=0;
   // cout<<tempblock.array[0].key<<" 8888888"<<tempblock.array[1].key<<"debug in findelement"<<endl;
    //cout<<tempblock.numofelment<<"debug in tempblock.num in findelement"<<endl;
     int location=lower_bound(tempblock.array,tempblock.array+tempblock.numofelment,tempelement)-tempblock.array;//todo
-    int nowlocation=location;//todo what's the fuuuck
+    int nowlocation=location;
     //cout<<location<<"location  debug in findnode"<<endl;
 
     //above is right

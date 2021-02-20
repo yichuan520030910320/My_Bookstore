@@ -147,7 +147,6 @@ void UnrolledLinkedList::mergeblock(int offset1, int offset2)
     f3.seekg(offset1);
     f3.write(reinterpret_cast<char*>(&tempblock1),sizeof (block));
     f1.close(),f2.close(),f3.close(),f4.close();
-
 }
 
 

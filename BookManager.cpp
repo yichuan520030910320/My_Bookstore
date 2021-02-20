@@ -99,8 +99,10 @@ string ISBN;for (i++; i <len&&temp[i]!=' ' ; ++i) {ISBN+=temp[i];}
         }
     }
     else if (temp1=="modify"){
+       // cout<<cmd.user_stack[cmd.usernum-1].priviledge<<"&&&&&&&&&"<<endl;
+       // cout<<cmd.user_stack[cmd.usernum-1].currentbookISBN<<endl;
         if ((cmd.user_stack[cmd.usernum-1].priviledge)<3||cmd.user_stack[cmd.usernum-1].currentbookISBN==-1) {
-            //cout<<"first invalid in modify fuction"<<endl;
+           // cout<<"first invalid in modify fuction"<<endl;
             cout<<"Invalid"<<endl;
             return;}
 string modify1,modify2,modify3,modify4,modify5,modify6;

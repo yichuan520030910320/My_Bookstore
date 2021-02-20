@@ -60,7 +60,7 @@ int main() {
         //ull.printList();
         if (i % (TEST_SIZE/100) == 1)cout << i << endl;
     }
-
+ull.debug();
     for (int i = 0; i < TEST_SIZE; i++) {
         vector<int> res(ull.findelement(test_vec[i])), answer = save[test_vec[i]];
       //  ull.findelement(test_vec[i], res);

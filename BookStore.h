@@ -80,20 +80,23 @@ fstream f1,f2,f3,f4,f5,f6;
         return returnvec;
     }
     void run(string temp);
-    void select(string ISBN_){//modify the stack
+    void select(string ISBN_){
+        //modify the stack
        // cout<<cmd.usernum<<"   in select"<<endl;
         //cout<<cmd.user_stack[cmd.usernum-1].id<<"(((((in select"<<endl;
        // cout<<cmd.user_stack[cmd.usernum-1].priviledge<<"^^^^^^^ in select"<<endl;//random
         if (ISBN_.empty()||(cmd.user_stack[cmd.usernum-1].priviledge)<3) {
-           //cout<<"^^ in selelct"<<endl;//todo
+           //cout<<"^^ in selelct"<<endl;
             cout<<"Invalid"<<endl;
             return;}
         //cout<<"&&&&&&&&&"<<endl;
         //(--cmd.user_stack.end())->currentbookISBN=atoi(ISBN_.c_str());
        // cout<<(--cmd.user_stack.end())->currentbookISBN<<"&&&&&&&"<<endl;
        vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(ISBN_));
+        //cout<<tempsearch.empty()<<"&&&&&&&&&&"<<endl;
         if (tempsearch.empty()){
            //cout<<"is empty in select"<<endl;
+           f1.close();
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(BOOK_DATA,ios::out|ios::binary);
@@ -109,7 +112,7 @@ fstream f1,f2,f3,f4,f5,f6;
 //            cout<<tempnam<<"test in select in tempnam"<<endl;
             f1.seekg(0,ios::end);
             int tempoffset=f1.tellg();//must be incorrect
-           // cout<<tempoffset<<"***************in name selsect"<<endl;//todo
+           //cout<<tempoffset<<"***************in name selsect"<<endl;
             Book tempbook;
             strcpy(tempbook.ISBN,ISBN_.c_str());
             f1.write(reinterpret_cast<char*>(&tempbook),sizeof (Book));
@@ -121,7 +124,7 @@ fstream f1,f2,f3,f4,f5,f6;
             ISBN_BOOKSTORE_blocklist.addelement(element(tempoffset,ISBN_.c_str()));//todo
            // cout<<"select fuction:"<<endl;
            // ISBN_BOOKSTORE_blocklist.debug();
-          //  cout<<"select fuc"<<endl;
+           // cout<<"select fuc"<<endl;
             (--cmd.user_stack.end())->currentbookISBN=tempoffset;
             //ISBN_BOOKSTORE_blocklist.debug();
             f1.close();
@@ -147,6 +150,7 @@ fstream f1,f2,f3,f4,f5,f6;
             cout<<"Invalid"<<endl;
             return;}
 int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
+        f6.close();
         f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
         if (!f6){
             f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -162,6 +166,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
         //std::string s = std::to_string(tempisbn) ;
         vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(s));
         int tempoffset=tempsearch[0];
+        f1.close();
         f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
         if (!f1){
             f1.open(BOOK_DATA,ios::out|ios::binary);
@@ -173,6 +178,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
         tempbook.quantity+=tempquantity;
         f1.seekg(tempoffset);
         f1.write(reinterpret_cast<char*>(&tempbook),sizeof (Book));
+        f2.close();
         f2.open(TOTAL_FINANCE_DATA,ios_base::binary|ios::in | ios::out);
         if (!f2){
             f2.open(TOTAL_FINANCE_DATA,ios::out|ios::binary);
@@ -206,6 +212,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
           // cout<<"first invalid in modify fuction"<<endl;
             cout<<"Invalid"<<endl;
             return;}
+        f1.close();
         f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
         if (!f1){
             f1.open(BOOK_DATA,ios::out|ios::binary);
@@ -226,6 +233,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
                 cout<<"Invalid"<<endl;
                 return;}
             int tempoffset=tempsearch[0];
+            f6.close();
             f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f6){
                 f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -276,6 +284,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
                 f1.close();
                 return;}
             int tempoffset=tempsearch[0];
+            f6.close();
             f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f6){
                 f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -331,6 +340,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
             //cout<<tempoffset<<"  tempoffset in ISBN in modify"<<endl;
 
             //modify
+            f6.close();
             f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f6){
                 f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -374,6 +384,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
                 f1.close();
                 return;}
             int tempoffset=tempsearch[0];
+            f6.close();
             f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f6){
                 f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -428,7 +439,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
                 KEYWORD_BOOKSTORE.addelement(element(tempoffset,tempvec[i]));
             }
           // KEYWORD_BOOKSTORE.debug();
-          //  cout<<"  in modify keyword"<<endl;
+           //cout<<"  in modify keyword"<<endl;
             f1.close();
             f6.close();
 
@@ -440,6 +451,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
                 f1.close();
                 return;}
             int tempoffset=tempsearch[0];
+            f6.close();
             f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f6){
                 f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -503,11 +515,12 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
         }
     }
     void buy(string ISBN_,string quantity){
-        //cout<<"in buy"<<endl;
+       // cout<<"in buy"<<endl;
         int tempquantity=atoi(quantity.c_str());
-
+//ISBN_BOOKSTORE_blocklist.debug();
         vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(ISBN_));
         if (tempsearch.empty()){
+           // cout<<"iiiiiii"<<endl;
             cout<<"Invalid"<<endl;
             return;}
         if (tempquantity==0){
@@ -515,6 +528,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
             return;}
         int tempoffset=tempsearch[0];
        // cout<<tempoffset<<"   in buy tempoffset"<<"  ISBN:"<<ISBN_<<endl;
+       f1.close();
         f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
         if (!f1){
             f1.open(BOOK_DATA,ios::out|ios::binary);
@@ -540,6 +554,7 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
        // booknum_for_storage+=tempquantity;
        // f1.seekg(tempoffset+218);
         //f1.write(reinterpret_cast<char*>(&booknum_for_storage),sizeof (int));
+        f2.close();
         f2.open(TOTAL_FINANCE_DATA,ios_base::binary|ios::in | ios::out);
         if (!f2){
             f2.open(TOTAL_FINANCE_DATA,ios::out|ios::binary);
@@ -581,6 +596,7 @@ vector<int >shoe_vec(ISBN_BOOKSTORE_blocklist.return_all_offset());
         //cout<<shoe_vec[0]<<"  "<<sh
         for (int i = 0; i <shoe_vec.size() ; ++i) {
             //cout<<shoe_vec[i]<<endl;
+            f1.close();
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(BOOK_DATA,ios::out|ios::binary);
@@ -660,10 +676,12 @@ f1.close();
             f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
             f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
             int tempooffset=tempans[0];
+            f1.close();
             f1.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(BOOK_DATA,ios::out|ios::binary);
             }
+            f6.close();
             f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
             if (!f6){
                 f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -735,7 +753,8 @@ f1.close();
             }
             set<pair_ISBN_offset>::iterator it;
             for(it=s.begin ();it!=s.end ();it++)
-            {f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
+            {f6.close();
+                f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
                 if (!f6){
                     f6.open(BOOK_DATA,ios::out|ios::binary);
                 }
@@ -783,6 +802,7 @@ f6.close();
             f1.clear(),f2.clear(),f3.clear(),f4.clear(),f5.clear(),f6.clear();
             f1.close(),f2.close(),f3.close(),f4.close(),f5.close(),f6.close();
            // cout<<f1.fail()<< f2.fail()<<f3.fail()<<f4.fail()<<f5.fail()<<f6.fail()<<"((("<<endl;
+           f1.close();
             f1.open(BOOK_DATA,ios::binary|ios::in | ios::out);
             if (!f1){f1.open(BOOK_DATA,ios::out|ios::binary);}
            // cout<<f1.fail()<<"((("<<endl;
@@ -809,7 +829,9 @@ f6.close();
           // cout<<tempans.size()<<"   "<<s.size()<<"&&&&&&&&&&&&&&&&&"<<endl;
             set<pair_ISBN_offset>::iterator it;
             for(it=s.begin ();it!=s.end ();it++)
-            {f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
+            {
+                f6.close();
+                f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
                 if (!f6){
                     f6.open(BOOK_DATA,ios::out|ios::binary);
                 }
@@ -879,7 +901,7 @@ f6.close();
             }
             set<pair_ISBN_offset>::iterator it;
             for(it=s.begin ();it!=s.end ();it++)
-            {
+            {f6.close();
                 f6.open(BOOK_DATA,ios_base::binary|ios::in | ios::out);
                 if (!f6){
                     f6.open(BOOK_DATA,ios::out|ios::binary);
@@ -920,10 +942,12 @@ f6.close();
             return;
         }
         if (time==-1){
+            f1.close();
             f1.open(EVERT_FINANCE_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(EVERT_FINANCE_DATA,ios::out|ios::binary);
             }
+            f2.close();
             f2.open(EVERT_FINANCE_DATA,ios_base::binary|ios::in | ios::out);
             if (!f2){
                 f2.open(EVERT_FINANCE_DATA,ios::out|ios::binary);
@@ -947,10 +971,12 @@ f6.close();
             cout<<endl;
             f1.close(),f2.close();
         } else{
+            f1.close();
             f1.open(EVERT_FINANCE_DATA,ios_base::binary|ios::in | ios::out);
             if (!f1){
                 f1.open(EVERT_FINANCE_DATA,ios::out|ios::binary);
             }
+            f2.close();
             f2.open(EVERT_FINANCE_DATA,ios_base::binary|ios::in | ios::out);
             if (!f2){
                 f2.open(EVERT_FINANCE_DATA,ios::out|ios::binary);

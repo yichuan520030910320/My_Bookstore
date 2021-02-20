@@ -25,6 +25,7 @@ user_stack.push_back(basic);
 usernum=1;//将用户信息写入存储文件中
 //cout<<f1.is_open()<<"constructer in usermanager"<<endl;
     if (!(exists_test3(filename))){
+        f1.close();
         if (!f1.is_open()) {
             //cout<<filename<<endl;
 
