@@ -317,6 +317,7 @@ int controloffset=0;
         f3.seekg(controloffset+4);
         f3.read(reinterpret_cast<char*>(&controloffset),4);
     }
+    if (controloffset==-1){controloffset=0;}
     f3.seekg(controloffset);
    //cout<<controloffset<<"   findelement controloffset"<<endl;
     block tempblock;
