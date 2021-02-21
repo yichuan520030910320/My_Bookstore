@@ -1,5 +1,5 @@
 # **bookstore2021**
-#####感谢PaoerL同学的帮助，指导我块链的写法，告诉我DEBUG的技巧，感谢憨憨聪老师帮助我凌晨两点配环境，感谢sjm同学后期给予我启发性的帮助，还有libro,Monta,luohaotian同学帮助我解决不小的零碎问题,哦哦还有DE出最后一个BUG的xt哈哈
+#####感谢PaperL同学的帮助，指导我块链的写法，告诉我DEBUG的技巧，感谢憨憨聪老师帮助我凌晨两点配环境，感谢sjm同学后期给予我启发性的帮助，还有libro,Monta,luohaotian同学帮助我解决不小的零碎问题,哦哦还有DE出最后一个BUG的xt哈哈
 ###许多细节由PaperL启发~
 ###[github代码](https://github.com/yichuan520030910320/bookstore6.0)
 ##1.blockchain

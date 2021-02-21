@@ -9,29 +9,27 @@
 #include <iomanip>
 #include <set>
 #include <map>
-//vector<string>splitkey(string index){
-//    vector<string> returnvec;
-//    int len=index.length();
-//    string a1,a2,a3,a4,a5,a6,a7,a8;
-//    int i;
-//    for ( i = 0; i <len&&index[i]!='|' ; ++i) {a1+=index[i];}
-//    returnvec.push_back(a1);
-//    for (i++;i<len&&index[i]!='|';++i) {a2+=index[i];}
-//    if (!a2.empty())returnvec.push_back(a2);
-//    for (i++;i<len&&index[i]!='|';++i) {a3+=index[i];}
-//    for (i++;i<len&&index[i]!='|';++i) {a4+=index[i];}
-//    for (i++;i<len&&index[i]!='|';++i) {a5+=index[i];}
-//    for (i++;i<len&&index[i]!='|';++i) {a6+=index[i];}
-//    for (i++;i<len&&index[i]!='|';++i) {a7+=index[i];}
-//    for (i++;i<len&&index[i]!='|';++i) {a8+=index[i];}
-//    if (!a3.empty())returnvec.push_back(a3);
-//    if (!a4.empty())returnvec.push_back(a4);
-//    if (!a5.empty())returnvec.push_back(a5);
-//    if (!a6.empty())returnvec.push_back(a6);
-//    if (!a7.empty())returnvec.push_back(a7);
-//    if (!a8.empty())returnvec.push_back(a8);
-//    return returnvec;
-//}
+#include <stdio.h>
+#include <windows.h>
+void color(int x) ;//设置字体颜色
+
+class reportfinance{
+public:
+    friend ostream &operator<<(ostream &os,const reportfinance&obj);
+    char ISBN[120];
+    bool input_or_output;
+    int num;
+    double price1;
+    user tempuser;
+    char time[1000];
+};
+ostream &operator<<(ostream &os,const reportfinance&obj);
+inline char* righttime(){
+    time_t now = time(0);
+    return ctime(&now);
+}
+#define HO(x) x.open(BOOK_DATA); x<<__FUNCTION__<<__LINE__<<endl;
+#define DEBUG() cout<<__FUNCTION__<<__LINE__<<ENDL;
 void init() ;
 class Book{
 public:char ISBN[30];
@@ -41,7 +39,6 @@ public:char ISBN[30];
     double price;
     int quantity;
     Book();
-//缺少构造函数
 };
 enum bookinfo{
     ISBN,NAME,AUTHOR,KETWORDS
@@ -54,6 +51,7 @@ public:
     usermanager cmd;
     UnrolledLinkedList ISBN_BOOKSTORE_blocklist,BOOKNAME_BOOKSTORE_blocklist,KEYWORD_BOOKSTORE,AUTHOR_BOOKSTORE;//the region of the four output
 fstream f1,f2,f3,f4,f5,f6;
+fstream fa,fb;
     bookstore();
     vector<string>splitkey(string index){
         vector<string> returnvec;
@@ -79,6 +77,14 @@ fstream f1,f2,f3,f4,f5,f6;
         if (!a8.empty())returnvec.push_back(a8);
         return returnvec;
     }
+
+
+        void report_finance();
+        void report_employee(string temp);
+        void log();
+        void reportme();
+
+
     void run(string temp);
     void select(string ISBN_){
         //modify the stack
@@ -201,6 +207,22 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
         bool output=1;//1定义为支出，0定义为收入
         f2.write(reinterpret_cast<char*>(&output),sizeof (bool));
         f2.write(reinterpret_cast<char*>(&allcost),sizeof (double ));
+
+        fa.close();
+        fa.open(CLI_FINANCE_DETAILED,ios_base::binary|ios::in | ios::out);
+        if (!fa){
+            fa.open(CLI_FINANCE_DETAILED,ios::out|ios::binary);
+        }
+        fa.seekg(0,ios::end);
+        reportfinance tempreport;
+        strcpy(tempreport.ISBN,ss);
+        tempreport.tempuser=cmd.user_stack[cmd.usernum-1];
+        tempreport.num=tempquantity;
+        tempreport.input_or_output=1;
+        tempreport.price1=allcost;
+        strcpy(tempreport.time,righttime());
+        fa.write(reinterpret_cast<char*>(&tempreport),sizeof (tempreport));
+        fa.close();
         f1.close(),f2.close();
     }
     void modify(string keycharacter,string index,int offset){
@@ -517,10 +539,8 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
     void buy(string ISBN_,string quantity){
        // cout<<"in buy"<<endl;
         int tempquantity=atoi(quantity.c_str());
-//ISBN_BOOKSTORE_blocklist.debug();
         vector<int>tempsearch (ISBN_BOOKSTORE_blocklist.findelement(ISBN_));
         if (tempsearch.empty()){
-           // cout<<"iiiiiii"<<endl;
             cout<<"Invalid"<<endl;
             return;}
         if (tempquantity==0){
@@ -579,6 +599,21 @@ int tempisbn=cmd.user_stack[cmd.usernum-1].currentbookISBN;
         //cout<<allcost<<"    buy "<<endl;
         f2.write(reinterpret_cast<char*>(&output),sizeof (bool));
         f2.write(reinterpret_cast<char*>(&allcost),sizeof (double ));
+        fa.close();
+        fa.open(CLI_FINANCE_DETAILED,ios_base::binary|ios::in | ios::out);
+        if (!fa){
+            fa.open(CLI_FINANCE_DETAILED,ios::out|ios::binary);
+        }
+        fa.seekg(0,ios::end);
+        reportfinance tempreport;
+        tempreport.price1=allcost;
+        tempreport.input_or_output=0;
+        tempreport.num=tempquantity;
+        strcpy(tempreport.ISBN,tempbook.ISBN);
+        strcpy(tempreport.time,righttime());
+        tempreport.tempuser=cmd.user_stack[cmd.usernum-1];
+        fa.write(reinterpret_cast<char*>(&tempreport),sizeof (reportfinance));
+        fa.close();
         f1.close(),f2.close();
         cout<<setiosflags(ios::fixed) << setprecision(2)<<allcost<<endl;
        // cout<<" the end in buy"<<endl;

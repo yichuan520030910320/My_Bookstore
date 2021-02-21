@@ -2,7 +2,99 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctime>
+void color(int x) //设置字体颜色
+{
+    if(x>=0 && x<=15)
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), x);
+    else
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+}
+ostream &operator<<(ostream &os,const reportfinance&obj){
+    srand((double)clock());
+    int temp=rand()%15;
+    color(temp);
+    //cout<<obj.input_or_output<<endl;
+    //cout<<obj.input_or_output<<endl;
+    if (obj.input_or_output){
+        os<<obj.tempuser.id<<": "<<obj.tempuser.name<<"   import   "<<obj.num<<"  "<<obj.ISBN<<"  in  "<<obj.price1<<"  at  "<<obj.time<<endl;
+    }
+    else{
+        os<<obj.tempuser.id<<": "<<obj.tempuser.name<<"   buy   "<<obj.num<<"  "<<obj.ISBN<<"  in  "<<obj.price1<<"  at  "<<obj.time<<endl;
+    }
+    return os;
+}
 void init(){
+
+}
+class logemployee{
+public: friend ostream &operator<<(ostream &os,const logemployee&obj);
+    user temp;
+    char command[160];
+};
+void bookstore::report_finance()
+{
+    fa.close();
+    fa.open(CLI_FINANCE_DETAILED,ios_base::binary|ios::in | ios::out);
+    if (!fa){
+        fa.open(CLI_FINANCE_DETAILED,ios::out|ios::binary);
+    }
+    fa.seekg(0,ios::end);
+    while (fa.tellg()>0) {
+        fa.seekg(-sizeof(reportfinance), ios::cur);
+        reportfinance temp;
+        fa.read(reinterpret_cast<char *>(&temp), sizeof(temp));
+        cout << temp;
+        fa.seekg(-sizeof(reportfinance), ios::cur);
+    }
+}
+void bookstore::report_employee(string name)
+{vector<int>tempvec(cmd.the_blockchai_of_usermanager.findelement(name));
+    if (tempvec.empty()){cout<<"GO FUCK  FW"<<endl;
+        return;}
+    fa.close();
+    fa.open(CLI_EMPLOYEE_DETAILED,ios_base::binary|ios::in | ios::out);
+    if (!fa){fa.open(CLI_EMPLOYEE_DETAILED,ios::out|ios::binary);}
+    fa.seekg(0,ios::end);
+    while (fa.tellg()>0) {
+        fa.seekg(-sizeof(logemployee), ios::cur);
+        logemployee temp;
+        fa.read(reinterpret_cast<char *>(&temp), sizeof(temp));
+        if (strcmp(name.c_str(),temp.temp.id)==0) { cout << temp; }
+        fa.seekg(-sizeof(logemployee), ios::cur);
+    }
+}
+void bookstore::log()
+{
+    fa.close();
+    fa.open(CLI_EMPLOYEE_DETAILED,ios_base::binary|ios::in | ios::out);
+    if (!fa){fa.open(CLI_EMPLOYEE_DETAILED,ios::out|ios::binary);}
+    fa.seekg(0,ios::end);
+    while (fa.tellg()>0) {
+        fa.seekg(-sizeof(logemployee), ios::cur);
+        logemployee temp;
+        fa.read(reinterpret_cast<char *>(&temp), sizeof(temp));
+        cout << temp;
+        fa.seekg(-sizeof(logemployee), ios::cur);
+    }
+}
+void bookstore::reportme()
+{
+user tempuser;
+tempuser=cmd.user_stack[cmd.usernum-1];
+char tempid[40];
+strcpy(tempid,tempuser.id);
+    fa.close();
+    fa.open(CLI_EMPLOYEE_DETAILED,ios_base::binary|ios::in | ios::out);
+    if (!fa){fa.open(CLI_EMPLOYEE_DETAILED,ios::out|ios::binary);}
+    fa.seekg(0,ios::end);
+    while (fa.tellg()>0) {
+        fa.seekg(-sizeof(logemployee), ios::cur);
+        logemployee temp;
+        fa.read(reinterpret_cast<char *>(&temp), sizeof(temp));
+        if (strcmp(tempid,temp.temp.id)==0) { cout << temp; }
+        fa.seekg(-sizeof(logemployee), ios::cur);
+    }
 
 }
 bool isDegital(string str) {
@@ -20,10 +112,25 @@ void error(){
 void the_fuction_in_modify(string temp){
 
 }
+
+ostream &operator<<(ostream &os,const logemployee&obj){
+    srand((double)clock());
+    int temp=rand()%15;
+    color(temp);
+    os<<obj.temp.id<<"  :  "<<obj.temp.name<<"      do   "<<obj.command<<endl;
+    return os;
+}
 void bookstore::run(string temp){
 //cout<<"&&&"<<endl;
 //
-
+    fa.close();
+    fa.open(CLI_EMPLOYEE_DETAILED,ios_base::binary|ios::in | ios::out);
+    if (!fa){fa.open(CLI_EMPLOYEE_DETAILED,ios::out|ios::binary);}
+    fa.seekg(0,ios::end);
+    logemployee templog;
+    templog.temp=cmd.user_stack[cmd.usernum-1];
+    strcpy(templog.command,temp.c_str());
+    fa.write(reinterpret_cast<char*>(&templog),sizeof (templog));
     if (temp.empty()){return;}
 int len=temp.length();
 string temp1;int i;
@@ -59,7 +166,18 @@ string temp1;int i;
            // cout<<user_id<<" "<<pass<<endl;
             else   { cmd.su(user_id, pass); }
         }
-    } else if (temp1=="useradd"){
+    } else if(temp1=="report_finance"){
+        report_finance();
+    }
+        else if(temp1=="log"){log();}
+    else if (temp1=="report_me"){
+      reportme();
+    } else if (temp1=="report_employee"){
+        string user_id;
+        for (i++; i <len&&temp[i]!=' ' ; ++i) {user_id+=temp[i];}
+      report_employee(user_id);
+    }
+    else if (temp1=="useradd"){
         string user_id,pass,privilege,username;
         for (i++; i <len&&temp[i]!=' ' ; ++i) {user_id+=temp[i];}
         for (i++; i <len&&temp[i]!=' ' ; ++i) {pass+=temp[i];}

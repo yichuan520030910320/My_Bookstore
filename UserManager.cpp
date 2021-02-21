@@ -14,10 +14,12 @@ usermanager::usermanager() :filename(USER_DATA),the_blockchai_of_usermanager(USE
 
 user temp;
 temp.priviledge=7;
-strcpy(temp.name," ");
+strcpy(temp.name,"hhhhlalal");
 strcpy(temp.id,"root");
 strcpy(temp.password,"sjtu");
 user basic;
+strcpy(basic.id,"what's the fffffffffffffuck");
+strcpy(basic.name,"dont want to codeqwqqqqqq");
 basic.priviledge=0;
 user_stack.clear();
 user_stack.push_back(basic);
