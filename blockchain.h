@@ -18,8 +18,8 @@
 using std::string;
 using namespace std;
 
-class element{//pherhaps node
-public:int offset;//thie offset means the locatiion ih the file of the book(sorted by the add time )
+class element{
+public:int offset;
     char key[100];
 public:element(const int &offset_=-1,const string &key_=" ");
     bool operator<(const element &a) const;
